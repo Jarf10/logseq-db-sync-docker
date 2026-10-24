@@ -27,6 +27,7 @@ jobs:
           ref="${{ inputs.logseq_ref }}"
           sha=$(git ls-remote https://github.com/logseq/logseq.git "${ref:-HEAD}" | cut -f1 | head -n1)
           echo "sha=${sha:-$ref}" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
@@ -39,8 +40,8 @@ jobs:
           push: true
           build-args: LOGSEQ_REF=${{ steps.ref.outputs.sha }}
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.ref.outputs.sha }}
+            ${{ steps.ref.outputs.image }}:latest
+            ${{ steps.ref.outputs.image }}:${{ steps.ref.outputs.sha }}
           labels: |
             org.opencontainers.image.revision=${{ steps.ref.outputs.sha }}
           cache-from: type=gha
