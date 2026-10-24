@@ -1,6 +1,6 @@
 services:
   db-sync:
-    image: ghcr.io/<github-user>/logseq-db-sync-docker:latest
+    image: ghcr.io/jarf10/logseq-db-sync-docker:latest
     restart: unless-stopped
     environment:
       DB_SYNC_PORT: 8787
